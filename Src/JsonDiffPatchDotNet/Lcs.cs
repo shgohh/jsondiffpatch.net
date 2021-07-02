@@ -56,9 +56,9 @@ namespace JsonDiffPatchDotNet
                 // If the JSON tokens at the same position are both Objects or both Arrays, we just say they 
                 // are the same even if they are not, because we can package smaller deltas than an entire 
                 // object or array replacement by doing object to object or array to array diff.
-                if (JToken.DeepEquals(left[i - 1], right[j - 1])
-                || left[i - 1].Type == JTokenType.Object && right[j - 1].Type == JTokenType.Object
-                || left[i - 1].Type == JTokenType.Array && right[j - 1].Type == JTokenType.Array)
+                if (JToken.DeepEquals(left[i - 1], right[j - 1]))
+                //|| left[i - 1].Type == JTokenType.Object && right[j - 1].Type == JTokenType.Object
+                //|| left[i - 1].Type == JTokenType.Array && right[j - 1].Type == JTokenType.Array)
                 {
                     result.Sequence.Add(left[i - 1]);
                     result.Indices1.Add(i - 1);
@@ -71,10 +71,16 @@ namespace JsonDiffPatchDotNet
                 if (matrix[i, j - 1] > matrix[i - 1, j])
                 {
                     i++;
+					j = 1;
                 }
                 else
                 {
                     j++;
+					if (j > ri)
+					{
+						i++;
+						j = 1;
+					}
                 }
             }
 
